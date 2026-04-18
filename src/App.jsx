@@ -33,8 +33,6 @@ function getMatchId() {
   return "match-actuel";
 }
 
-}
-
 async function fetchVotes(matchId) {
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/votes?match_id=eq.${matchId}&select=*`, {
@@ -184,8 +182,7 @@ export default function App() {
   const submitVote = async () => {
     setLoading(true);
     const ok = await insertVote({
-      sylver,
-      funny,
+      sylver, funny,
       sylver_msg: sylverMsg.trim(),
       funny_msg: funnyMsg.trim(),
       match_id: matchId
@@ -222,17 +219,15 @@ export default function App() {
     const updated = [entry, ...history];
     lset(HISTORY_KEY, updated); setHistory(updated);
     await deleteVotes(matchId);
-    const newId = Date.now().toString();
-    lset(MATCH_KEY, newId); lset(VOTED_KEY, false); setHasVoted(false);
+    lset(VOTED_KEY, false); setHasVoted(false);
     setVotes([]); setMatchLabel(""); setAdminUnlocked(false);
-    setScreen("home"); window.location.reload();
+    setScreen("home");
   };
 
   const resetVotes = async () => {
     await deleteVotes(matchId);
-    const newId = Date.now().toString();
-    lset(MATCH_KEY, newId); lset(VOTED_KEY, false); setHasVoted(false);
-    setVotes([]); window.location.reload();
+    lset(VOTED_KEY, false); setHasVoted(false);
+    setVotes([]);
   };
 
   const tryAdminCode = () => {
